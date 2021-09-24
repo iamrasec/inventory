@@ -45,7 +45,8 @@ class Sales extends BaseController {
 
         $products = new ProductModel();
         // $query_products = $products->table('products')->get();
-        $query_products = $products->where('status', 1)->get();
+        // $query_products = $products->where('status', 1)->get();
+        $query_products = $products->where(['status' => 1, 'price > ' => 0])->get();
         $data['products'] = $query_products->getResult();
 
         $categories = new CategoryModel();
