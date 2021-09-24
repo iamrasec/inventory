@@ -3,3 +3,9 @@ function thousands_separators(num) {
   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return num_parts.join(".");
 }
+
+$(document).ready(function() {
+  $('.btn-disabled').on('click',function(event){
+    event.preventDefault();
+  });
+});
