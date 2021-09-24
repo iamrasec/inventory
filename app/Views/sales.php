@@ -1,0 +1,79 @@
+<?php
+// print_r(session()->get());
+// print_r($sales);
+
+$output = "";
+
+$today = date("F j, Y g:i A");
+?>
+<main class="withpadding">
+<div class="row">
+  <div class="col-12 col-md-10 mt-3 pt-3 pb-3 bg-white">
+    <h1>Sales List</h1>
+  </div>
+  <div class="col-12 col-md-2 mt-3 pt-3 pb-3 bg-white">
+    <a href="/sales/add" class="btn btn-primary"><i class="fas fa-plus"></i> Create Sales</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mt-3 pt-3 pb-3 bg-white">
+    <table id="sales_list" class="table table-striped table-bordered custom-list-table" style="width:100%">
+      <thead>
+          <tr>
+            <th>Sales Order No.</th>
+            <th>Receipt No.</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Order Date</th>
+            <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          <?php 
+          foreach($sales as $row) {
+            $output .= '<tr>';
+            $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->id.'</a></td>';
+            $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->receipt.'</a></td>';
+            $output .= '<td>'.$row->customer.'</td>';
+            $output .= '<td>Php '.$row->total.'</td>';
+            $output .= '<td>'.(($row->status == "0") ? "pending" : "closed").'</td>';
+            $output .= '<td>'.date("F j, Y g:i A", strtotime($row->order_date)).'</td>';
+            $output .= '<td>';
+            if($row->status == "0") {
+              $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i></a>&nbsp;&nbsp;&nbsp;';
+            }
+            $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+            $output .= '<a href="/sales/'.$row->id.'/delete" class="delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
+            $output .= '</td>';
+            $output .= '</tr>';
+          }
+
+          echo $output;
+          ?>
+      </tbody>
+      <tfoot>
+          <tr>
+            <th>Sales Order No.</th>
+            <th>Receipt No.</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Order Date</th>
+            <th>Action</th>
+          </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#sales_list').DataTable({
+      "order": [[0, "desc"]],
+    });
+  });
+</script>
+
+</main>

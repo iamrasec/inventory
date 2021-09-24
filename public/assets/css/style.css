@@ -1,0 +1,97 @@
+body {
+  background-color: #ffffff;
+}
+
+.nopadding {
+  padding: 0;
+}
+
+.withpadding {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.bg-dkblue {
+  background: #172b4c;
+}
+
+/* SIDEBAR MENU */
+#sidebarMenu {
+  height: 100vh;
+}
+
+#sidebarMenu .nav-link {
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+#sidebarMenu a {
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+#sidebarMenu a:hover, #sidebarMenu .nav-link.active {
+  color: #ffffff;
+  background: #095fa7;
+}
+/* END: SIDEBAR MENU */
+
+.logout-link {
+  padding: 0 20px;
+}
+
+.form-wrapper {
+  border-radius: 7px;
+}
+
+.form-wrapper label {
+  font-weight: bold;
+}
+
+.errors li {
+  list-style: none;
+  width: 100%;
+  text-align: center;
+}
+
+.errors ul {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nav-logout-link, .nav-profile-link {
+  display: inline-block;
+}
+
+.nav-item, .nav-item:active, .nav-item:visited {
+  color: rgba(255,255,255,.55);
+}
+
+@media (max-width: 768px) {
+  .form-wrapper .text-right {
+    text-align: center !important;
+  }
+
+  .form-wrapper .btn-primary {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+/* LIST TABLE */
+.custom-list-table td a.view-link-data, .custom-list-table td a.view-link-data:visited {
+  color: #01348b;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.custom-list-table .name {
+  min-width: 200px;
+}
+/* END: LIST TABLE */
+
+/* CREATE SALES ORDER */
+#products-select {
+  width: 100%;
+}
+/* END: CREATE SALES ORDER */
