@@ -94,4 +94,10 @@ body {
 #products-select {
   width: 100%;
 }
+.show_checkout_total {
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
 /* END: CREATE SALES ORDER */

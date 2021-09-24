@@ -6,5 +6,5 @@ use CodeIgniter\Model;
 
 class SalesModel extends Model {
   protected $table = 'sales';
-  protected $allowedFields = ['receipt', 'customer', 'products'];
+  protected $allowedFields = ['receipt', 'customer', 'status', 'total'];
 }

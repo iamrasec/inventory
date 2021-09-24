@@ -5,6 +5,7 @@ use App\Models\ProductModel;
 use App\Models\CategoryModel;
 use App\Models\BrandModel;
 use App\Models\SalesModel;
+use App\Models\SalesProductModel;
 
 class Sales extends BaseController {
   public function index() {
@@ -60,32 +61,53 @@ class Sales extends BaseController {
 
         if($this->request->getPost()) {
           $rules = [
-            'name' => 'required|min_length[3]',
-            'code' => 'required|min_length[3]|is_unique[products.code]',
-            'supplier' => 'required',
+            // 'checkout_products' => 'required',
+            'checkout_products' => [
+              'rules' => 'required',
+              'errors' => [
+                'required' => 'Please add atleast 1 product.',
+              ]
+            ],
           ];
 
           if(!$this->validate($rules)) {
             $data['validation'] = $this->validator;
           }
           else {
-            $model = new ProductModel();
+            $model = new salesModel();
 
             $newData = [
-              'name' => $this->request->getVar('name'),
-              'code' => $this->request->getVar('code'),
-              'size' => $this->request->getVar('size'),
-              'description' => $this->request->getVar('description'),
-              'stock_qty' => $this->request->getVar('stock_qty'),
-              'unit_measure' => $this->request->getVar('unit_measure'),
-              'supplier_price' => $this->request->getVar('supplier_price'),
-              'price' => $this->request->getVar('price'),
-              'supplier' => $this->request->getVar('supplier'),
-              'lowstock_alert' => $this->request->getVar('lowstock_alert'),
+              'receipt' => $this->request->getVar('receipt'),
+              'customer' => $this->request->getVar('customer'),
+              'status' => 0,
+              'total' => $this->request->getVar('total'),
             ];
 
-            $model->save($newData);
-            session()->setFlashdata('success', 'Product successfully added');
+            $model->insert($newData);
+            $sale_id = $model->getInsertID();
+
+            $checkoutProducts = json_decode($this->request->getVar('checkout_products'));
+
+            $salesProductModel = new SalesProductModel();
+            
+            foreach($checkoutProducts as $chck_prod) {
+              // print_r($chck_prod);
+              // print_r('<br>');
+
+              $products_arr = [
+                'sid' => $sale_id,
+                'pid' => (int) $chck_prod->pid,
+                'qty' => number_format($chck_prod->qty, 2, '.', ''),
+                'price' => number_format($chck_prod->price, 2, '.', ''),
+                'total' => number_format($chck_prod->total, 2, '.', ''),
+              ];
+
+              $salesProductModel->save($products_arr);
+
+              // print_r($products_arr);
+
+            }
+            session()->setFlashdata('success', 'Sales Order successfully added.');
 				    return redirect()->to('/sales');
           }
         }

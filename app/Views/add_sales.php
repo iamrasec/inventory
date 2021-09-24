@@ -80,13 +80,28 @@
               </div>
 
               <div class="form-group">
-                <label for="custname">Customer Name</label>
-                <input type="text" class="form-control" name="custname" id="custname" value="<?php echo set_value('custname'); ?>">
+                <label for="customer">Customer Name</label>
+                <input type="text" class="form-control" name="customer" id="customer" value="<?php echo set_value('customer'); ?>">
                 <div class="form-note"></div>
+              </div>
+
+              <hr class="mt-3 mb-3">
+
+              <div class="row">
+                <div class="col col-12 col-sm-12 col-md-12">
+                  <div class="form-group">
+                    <h3>Total</h3>
+                    <div class="show_checkout_total"></div>
+                    <input type="hidden" class="form-control" id="checkout_total" name="total" value="">
+                  </div>
+                </div>
               </div>
 
               <div class="row mt-3">
                 <div class="col-12 col-sm-4">
+                  <div class="form-group">
+                    <input type="hidden" class="form-control" id="checkout_products" name="checkout_products" value="">
+                  </div>
                   <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
@@ -116,17 +131,21 @@
         var addUnit = $('.products-select :selected').data("unit");
         var addUnitPrice = Number($('.products-select :selected').data("price"));
         var addLineTotal = addQty * addUnitPrice;
+        var checkoutTotal = Number($('#checkout_total').val());
 
         if(addProductId != "") {
           var alreadyAdded = 0;
           $.each(orderData, function(i, obj) {
-            if(obj.id == addProductId) {
+            if(obj.pid == addProductId) {
               obj.qty += addQty;
               addLineTotal = addUnitPrice * obj.qty;
               obj.total = addLineTotal;
+              checkoutTotal += addLineTotal;
               alreadyAdded = 1;
               $('.product-'+addProductId+' .show_qty').text(obj.qty);
               $('.product-'+addProductId+' .show_linetotal').text(thousands_separators(addLineTotal.toFixed(2)));
+              $('#checkout_total').val(checkoutTotal);
+              $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
               $('.products-select').val(null).trigger('change');
               $('#add_quantity').val(1);
               $('#add_unit').val("");
@@ -136,30 +155,37 @@
 
           if(alreadyAdded == 0) {
             orderData.push({
-              id: addProductId,
+              pid: addProductId,
               qty: addQty,
               price: addUnitPrice,
               total: addLineTotal,
             });
+
+            checkoutTotal += addLineTotal;
 
             var addProduct = '<div class="row added_product product-'+addProductId+'">';
             addProduct += '<div class="col-12 col-sm-12 col-md-6 show_name">'+addProductText+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-6">';
             addProduct += '<div class="row">';
             addProduct += '<div class="col-12 col-sm-12 col-md-3 show_qty">'+addQty+'</div>';
-            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unitprice">'+addUnitPrice.toFixed(2)+'</div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unitprice">'+thousands_separators(addUnitPrice.toFixed(2))+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unit">'+addUnit+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_linetotal">'+thousands_separators(addLineTotal.toFixed(2))+'</div>';
             addProduct += '</div>';
             addProduct += '</div>';
             addProduct += '</div>';
             $('#cart_items').prepend(addProduct);
+            $('#checkout_total').val(checkoutTotal);
+            $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
             $('.products-select').val(null).trigger('change');
             $('#add_quantity').val(1);
             $('#add_unit').val("");
           }
 
-          console.log(orderData);
+          $("#checkout_products").val(JSON.stringify(orderData));
+
+          // console.log(orderData);
+          console.log(checkoutTotal);
         }
         return false;
       });
