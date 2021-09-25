@@ -101,19 +101,19 @@
               <div class="form-group">
                 <label for="supplier">Supplier</label>
                 <select class="form-control" name="supplier" id="supplier">
-                      <?php 
-                      $suppliers_option = "";
-                      foreach($suppliers as $supcount => $suprow) {
-                        if($supcount == 0){
-                          $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
-                        }
-                        else {
-                          $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
-                        }
-                      }
-                      echo $suppliers_option;
-                      ?>
-                    </select>
+                  <?php 
+                  $suppliers_option = "";
+                  foreach($suppliers as $supcount => $suprow) {
+                    if($supcount == 0){
+                      $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
+                    }
+                    else {
+                      $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
+                    }
+                  }
+                  echo $suppliers_option;
+                  ?>
+                </select>
               </div>
             </div>
 

@@ -15,6 +15,10 @@ body {
   background: #172b4c;
 }
 
+.text-right {
+  text-align: right;
+}
+
 /* SIDEBAR MENU */
 #sidebarMenu {
   height: 100vh;
@@ -103,5 +107,10 @@ body {
 .btn-disabled{
   pointer-events: none;
   cursor: default;
+}
+.form_reference_area {
+  background: #e8ead9;
+  padding: 20px 10px;
+  border: 1px solid #5a6767;
 }
 /* END: CREATE SALES ORDER */

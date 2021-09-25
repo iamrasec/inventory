@@ -1,8 +1,9 @@
 <?php
 // print_r(session()->get());
-// print_r($supplier);
+// print_r($products);
 
 $output = "";
+$role = session()->get('role');
 ?>
 <main class="withpadding">
 <div class="row">
@@ -10,7 +11,7 @@ $output = "";
     <h1>Incoming Stocks</h1>
   </div>
   <div class="col-12 col-md-2 mt-3 pt-3 pb-3 bg-white">
-    <a href="/products/add" class="btn btn-primary"><i class="fas fa-plus"></i> Create Sales</a>
+    <a href="/incoming/add" class="btn btn-primary"><i class="fas fa-plus"></i> Add Purchases</a>
   </div>
 </div>
 
@@ -19,24 +20,38 @@ $output = "";
     <table id="products_list" class="table table-striped table-bordered custom-list-table" style="width:100%">
       <thead>
           <tr>
-            <th>ID</th>
-            <th>Receipt No.</th>
-            <th>Products</th>
-            <th>Date</th>
+            <th>Receipt</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>ETA</th>
+            <?php if($role == 'admin'): ?>
             <th>Action</th>
+            <?php endif; ?>
           </tr>
       </thead>
       <tbody>
           <?php 
           foreach($products as $row) {
             $output .= '<tr>';
-            $output .= '<td class="name"><a href="/suppliers/'.$row->id.'" class="view-link-data">'.$row->name.'</a></td>';
-            $output .= '<td>'.$row->code.'</td>';
-            $output .= '<td>'.$row->size.'</td>';
-            $output .= '<td>'.$row->supplier_price.'</td>';
-            $output .= '<td>'.$row->price.'</td>';
-            $output .= '<td>'.$row->stock_qty.'</td>';
-            $output .= '<td><a href="/products/'.$row->id.'/edit" class="edit-product edit-product-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;<a href="/products/'.$row->id.'/delete" class="delete-product delete-product-'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
+            $output .= '<td>'.$row->receipt.'</td>';
+            if($row->size != "") {
+              $output .= '<td>'.$row->product_name.' -- ( '.$row->size.' )</td>';
+            }
+            else {
+              $output .= '<td>'.$row->product_name.'</td>';
+            }
+            
+            $output .= '<td>'.number_format($row->qty, 2, '.', ',').'</td>';
+            $output .= '<td>'.$row->supplier_name.'</td>';
+            $output .= '<td>'.$row->eta.'</td>';
+            if($role == 'admin') {
+              $output .= '<td>';
+              $output .= '<a href="/incoming/'.$row->id.'/received" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Received</a>&nbsp;&nbsp;&nbsp;';
+              // $output .= '<a href="/incoming/'.$row->id.'/edit" class="edit-product edit-product-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+              // $output .= '<a href="/incoming/'.$row->id.'/delete" class="delete-product delete-product-'.$row->id.'"><i class="fas fa-trash-alt"></i></a>';
+              $output .= '</td>';
+            }
             $output .= '</tr>';
           }
 
@@ -45,11 +60,14 @@ $output = "";
       </tbody>
       <tfoot>
           <tr>
-            <th>ID</th>
-            <th>Receipt No.</th>
-            <th>Products</th>
-            <th>Date</th>
+            <th>Receipt</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>ETA</th>
+            <?php if($role == 'admin'): ?>
             <th>Action</th>
+            <?php endif; ?>
           </tr>
       </tfoot>
     </table>

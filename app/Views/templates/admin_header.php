@@ -9,9 +9,10 @@
     <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">-->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/assets/css/select2.min.css" />
+    <link rel="stylesheet" href="/assets/css/datepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="/assets/fontawesome/css/fontawesome.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/select2.min.css" />
 
     <script type="text/javascript" src="/assets/js/scripts.js"></script>
     <script type="text/javascript" src="/assets/fontawesome/js/all.js"></script>
@@ -19,6 +20,7 @@
     <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/assets/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="/assets/js/datepicker.min.js"></script>
     <title>Inventory Management System</title>
   </head>
   <body>
@@ -37,11 +39,11 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">
+                <a class="nav-link <?php echo (($uri->getSegment(1) == 'incoming' && $uri->getSegment(2) == '') ? 'active' : null); ?>" aria-current="page" href="/incoming">
                   <i class="fas fa-truck-moving"></i> Incoming Stocks
                 </a>
                 <ul class="submenu">
-                  <li><a class="nav-link" href="#">Add Purchases</a></li>
+                  <li><a class="nav-link <?php echo (($uri->getSegment(1) == 'incoming' && $uri->getSegment(2) == 'add') ? 'active' : null); ?>" href="/incoming/add">Add Purchases</a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -59,8 +61,8 @@
                 <ul class="submenu">
                   <li><a class="nav-link <?php echo (($uri->getSegment(1) == 'products' && $uri->getSegment(2) == 'add') ? 'active' : null); ?>" href="/products/add">Add Product</a></li>
                   <li><a class="nav-link <?php echo ($uri->getSegment(1) == 'suppliers' ? 'active' : null); ?>" href="/suppliers">List Suppliers</a></li>
-                  <li><a class="nav-link" href="#">Brands</a></li>
-                  <li><a class="nav-link" href="#">Categories</a></li>
+                  <!--<li><a class="nav-link" href="#">Brands</a></li>-->
+                  <!--<li><a class="nav-link" href="#">Categories</a></li>-->
                 </ul>
               </li>
               <li class="nav-item">

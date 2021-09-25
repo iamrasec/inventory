@@ -62,7 +62,8 @@ $routes->match(['get', 'post'], 'sales/(:num)/release', 'Sales::confirm_release/
 
 // Purchases
 $routes->get('incoming', 'Incoming::index', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming/add', 'Incoming::add_purchases', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming/add', 'Incoming::add_purchase', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming/(:num)/received', 'Incoming::received/$1', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

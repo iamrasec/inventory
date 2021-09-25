@@ -15,19 +15,19 @@ class Sales extends BaseController {
     $isLoggedIn = session()->get('isLoggedIn');
 
     if($isLoggedIn == 1) {
+      $model = new SalesModel();
+      $query = $model->table('sales')->get();
+
+      $data['sales'] = $query->getResult();
+
       if($role == 'admin') {
-        $model = new SalesModel();
-        $query = $model->table('sales')->get();
-
-        $data['sales'] = $query->getResult();
-
         echo view('templates/admin_header', $data);
-        echo view('sales');
-        echo view('templates/footer');
       }
       else {
-        return redirect()->to('/');
+        echo view('templates/header', $data);
       }
+      echo view('sales');
+      echo view('templates/footer');
     }
     else {
       return redirect()->to('/');
@@ -42,29 +42,24 @@ class Sales extends BaseController {
     $isLoggedIn = session()->get('isLoggedIn');
 
     if($isLoggedIn == 1) {
-      if($role == 'admin') {
-        $newData = [
-          'id' => $id,
-          'status' => 1,
-        ];
+      $newData = [
+        'id' => $id,
+        'status' => 1,
+      ];
 
-        $model = new SalesModel();
-        $model->save($newData);
-        session()->setFlashdata('success', 'Confirmed: Order released to customer.');
-        return redirect()->to('/sales/'.$id);
+      $model = new SalesModel();
+      $model->save($newData);
+      session()->setFlashdata('success', 'Confirmed: Order released to customer.');
+      return redirect()->to('/sales/'.$id);
 
-        // $data['supplier'] = $model->where('id', $id)->first();
+      // $data['supplier'] = $model->where('id', $id)->first();
 
-        // echo view('templates/admin_header', $data);
-        // echo view('edit_supplier');
-        // echo view('templates/footer');
-      }
-      else {
-        return redirect()->to('/');
-      }
+      // echo view('templates/admin_header', $data);
+      // echo view('edit_supplier');
+      // echo view('templates/footer');
     }
     else {
-      return redirect()->to('/');
+      return redirect()->to('/sales');
     }
   }
 
@@ -108,98 +103,97 @@ class Sales extends BaseController {
     $isLoggedIn = session()->get('isLoggedIn');
 
     if($isLoggedIn == 1) {
-      if($role == 'admin') {
+      $products = new ProductModel();
+      // $query_products = $products->table('products')->get();
+      // $query_products = $products->where('status', 1)->get();
+      $query_products = $products->where(['status' => 1, 'price > ' => 0])->get();
+      $data['products'] = $query_products->getResult();
 
-        $products = new ProductModel();
-        // $query_products = $products->table('products')->get();
-        // $query_products = $products->where('status', 1)->get();
-        $query_products = $products->where(['status' => 1, 'price > ' => 0])->get();
-        $data['products'] = $query_products->getResult();
+      $categories = new CategoryModel();
+      $query_categories = $categories->table('categories')->get();
+      $data['categories'] = $query_categories->getResult();
 
-        $categories = new CategoryModel();
-        $query_categories = $categories->table('categories')->get();
-        $data['categories'] = $query_categories->getResult();
-
-        $brands = new BrandModel();
-        $query_brands = $brands->table('brands')->get();
-        $data['brands'] = $query_brands->getResult();
+      $brands = new BrandModel();
+      $query_brands = $brands->table('brands')->get();
+      $data['brands'] = $query_brands->getResult();
 
 
-        if($this->request->getPost()) {
-          $rules = [
-            // 'checkout_products' => 'required',
-            'checkout_products' => [
-              'rules' => 'required',
-              'errors' => [
-                'required' => 'Please add atleast 1 product.',
-              ]
-            ],
+      if($this->request->getPost()) {
+        $rules = [
+          // 'checkout_products' => 'required',
+          'checkout_products' => [
+            'rules' => 'required',
+            'errors' => [
+              'required' => 'Please add atleast 1 product.',
+            ]
+          ],
+        ];
+
+        if(!$this->validate($rules)) {
+          $data['validation'] = $this->validator;
+        }
+        else {
+          $model = new salesModel();
+
+          $newData = [
+            'receipt' => $this->request->getVar('receipt'),
+            'customer' => $this->request->getVar('customer'),
+            'status' => 0,
+            'total' => $this->request->getVar('total'),
           ];
 
-          if(!$this->validate($rules)) {
-            $data['validation'] = $this->validator;
-          }
-          else {
-            $model = new salesModel();
+          $model->insert($newData);
+          $sale_id = $model->getInsertID();
 
-            $newData = [
-              'receipt' => $this->request->getVar('receipt'),
-              'customer' => $this->request->getVar('customer'),
-              'status' => 0,
-              'total' => $this->request->getVar('total'),
+          $checkoutProducts = json_decode($this->request->getVar('checkout_products'));
+
+          $salesProductModel = new SalesProductModel();
+          
+          foreach($checkoutProducts as $chck_prod) {
+            // print_r($chck_prod);
+            // print_r('<br>');
+            $pid = (int) $chck_prod->pid;
+
+            $products_arr = [
+              'sid' => $sale_id,
+              'pid' => $pid,
+              'qty' => number_format($chck_prod->qty, 2, '.', ''),
+              'price' => number_format($chck_prod->price, 2, '.', ''),
+              'total' => number_format($chck_prod->total, 2, '.', ''),
             ];
 
-            $model->insert($newData);
-            $sale_id = $model->getInsertID();
+            $salesProductModel->save($products_arr);
 
-            $checkoutProducts = json_decode($this->request->getVar('checkout_products'));
+            // echo '<pre>'.print_r($data['products']).'</pre>';
 
-            $salesProductModel = new SalesProductModel();
-            
-            foreach($checkoutProducts as $chck_prod) {
-              // print_r($chck_prod);
-              // print_r('<br>');
-              $pid = (int) $chck_prod->pid;
-
-              $products_arr = [
-                'sid' => $sale_id,
-                'pid' => $pid,
-                'qty' => number_format($chck_prod->qty, 2, '.', ''),
-                'price' => number_format($chck_prod->price, 2, '.', ''),
-                'total' => number_format($chck_prod->total, 2, '.', ''),
-              ];
-
-              $salesProductModel->save($products_arr);
-
-              // echo '<pre>'.print_r($data['products']).'</pre>';
-
-              foreach($data['products'] as $plist) {
-                if($pid == $plist->id) {
-                  $update_stock = [
-                    'id' => $pid,
-                    'stock_qty' => $plist->stock_qty - number_format($chck_prod->qty, 2, '.', ''),
-                  ];
-    
-                  $products->save($update_stock);
-                  break;
-                }
+            foreach($data['products'] as $plist) {
+              if($pid == $plist->id) {
+                $update_stock = [
+                  'id' => $pid,
+                  'stock_qty' => $plist->stock_qty - number_format($chck_prod->qty, 2, '.', ''),
+                ];
+  
+                $products->save($update_stock);
+                break;
               }
-
-              // print_r($products_arr);
-
             }
-            session()->setFlashdata('success', 'Sales Order successfully added.');
-				    return redirect()->to('/sales');
-          }
-        }
 
+            // print_r($products_arr);
+
+          }
+          session()->setFlashdata('success', 'Sales Order successfully added.');
+          return redirect()->to('/sales');
+        }
+      }
+
+      if($role == 'admin') {
         echo view('templates/admin_header', $data);
-        echo view('add_sales');
-        echo view('templates/footer');
       }
       else {
-        return redirect()->to('/');
+        echo view('templates/header', $data);
       }
+      echo view('add_sales');
+      echo view('templates/footer');
     }
     else {
       return redirect()->to('/');
