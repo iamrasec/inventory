@@ -170,7 +170,7 @@
           
           <div class="row">
             <div class="col-12 col-md-11">
-              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="submit" class="btn btn-primary">Save</button> | <a href="/products/<?php echo $product['id']; ?>">Cancel</a>
             </div>
             <div class="col-12 col-md-1 text-right">
               <a class="delete_product" href="#">Delete</a>

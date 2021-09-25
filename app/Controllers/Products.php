@@ -110,7 +110,7 @@ class Products extends BaseController {
           ];
 
           if($this->request->getPost('code') != $data['product']['code']) {
-            $rules['code'] = 'required|min_length[3]|is_unique[products.code]';
+            $rules['code'] = 'is_unique[products.code]';
           }
 
           if($this->request->getPost('brand') == 'new_brand') {
@@ -248,8 +248,7 @@ class Products extends BaseController {
         if($this->request->getPost()) {
           $rules = [
             'name' => 'required|min_length[3]',
-            'code' => 'required|min_length[3]|is_unique[products.code]',
-            'supplier' => 'required',
+            'code' => 'is_unique[products.code]',
           ];
 
           if($this->request->getPost('brand') == 'new_brand') {

@@ -25,7 +25,9 @@ $role = session()->get('role');
             <th>Name</th>
             <th>Code</th>
             <th>Size</th>
+            <?php if($role == 'admin'): ?>
             <th>Supplier Price</th>
+            <?php endif; ?>
             <th>Price</th>
             <th>Available Stocks</th>
             <?php if($role == 'admin'): ?>
@@ -40,7 +42,9 @@ $role = session()->get('role');
             $output .= '<td class="name"><a href="/products/'.$row->id.'" class="view-link-data">'.$row->name.'</a></td>';
             $output .= '<td>'.$row->code.'</td>';
             $output .= '<td>'.$row->size.'</td>';
-            $output .= '<td>'.number_format($row->supplier_price, 2, '.', ',').'</td>';
+            if($role == 'admin') {
+              $output .= '<td>'.number_format($row->supplier_price, 2, '.', ',').'</td>';
+            }
             $output .= '<td>'.number_format($row->price, 2, '.', ',').'</td>';
             $output .= '<td>'.number_format($row->stock_qty, 2, '.', ',').'</td>';
             if($role == 'admin') {
@@ -58,7 +62,9 @@ $role = session()->get('role');
           <th>Name</th>
             <th>Code</th>
             <th>Size</th>
+            <?php if($role == 'admin'): ?>
             <th>Supplier Price</th>
+            <?php endif; ?>
             <th>Price</th>
             <th>Available Stocks</th>
             <?php if($role == 'admin'): ?>

@@ -11,7 +11,9 @@ $role = session()->get('role');
     <h1>Incoming Stocks</h1>
   </div>
   <div class="col-12 col-md-2 mt-3 pt-3 pb-3 bg-white">
+    <?php if($role == 'admin'): ?>
     <a href="/incoming/add" class="btn btn-primary"><i class="fas fa-plus"></i> Add Purchases</a>
+    <?php endif; ?>
   </div>
 </div>
 

@@ -14,8 +14,8 @@ class Users extends BaseController
 		if($this->request->getPost()) {
 			// Form login validation here
 			$rules = [
-				'username' => 'required|min_length[6]|max_length[50]',
-				'password' => 'required|min_length[8]|max_length[255]|validateUser[username,password]',
+				'username' => 'required|min_length[3]|max_length[50]',
+				'password' => 'required|min_length[3]|max_length[255]|validateUser[username,password]',
 			];
 
 			$errors = [
@@ -69,7 +69,7 @@ class Users extends BaseController
 				'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
 				'firstname' => 'required|min_length[3]|max_length[20]',
 				'lastname' => 'required|min_length[3]|max_length[20]',
-				'email' => 'required|min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
+				'email' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
 				'password' => 'required|min_length[8]|max_length[255]',
 				'password_confirm' => 'matches[password]',
 			];

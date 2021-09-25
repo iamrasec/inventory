@@ -65,16 +65,16 @@
                   <!--<li><a class="nav-link" href="#">Categories</a></li>-->
                 </ul>
               </li>
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <a class="nav-link" href="#">
                   <i class="fas fa-user-friends"></i> Users
                 </a>
-              </li>
-              <li class="nav-item">
+              </li>-->
+              <!--<li class="nav-item">
                 <a class="nav-link" href="#">
                   <i class="fas fa-chart-bar"></i> Reports
                 </a>
-              </li>
+              </li>-->
             </ul>
           </div>
         </nav>

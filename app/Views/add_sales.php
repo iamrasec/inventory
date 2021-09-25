@@ -16,6 +16,7 @@
     </div>
   <?php endif; ?>
   <div class="col-12 col-md-10 mt-3 pt-3 pb-3 bg-white">
+    <a href="/sales" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Sales List</a>
     <h1>Create Sales</h1>
   </div>
 </div>

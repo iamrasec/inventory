@@ -135,12 +135,18 @@
               <div class="form-group">
                 <label for="unit_measure">Unit</label>
                 <select class="form-control" name="unit_measure" id="unit_measure">
-                  <option value="piece" selected="selected">Piece</option>
+                  <option value="bottle">Bottle</option>
+                  <option value="box">Box</option>
+                  <option value="bundle">Bundle</option>
+                  <option value="can">Can</option>
+                  <option value="case">Case</option>
                   <option value="dozen">Dozen</option>
                   <option value="kilo">Kilo</option>
                   <option value="liter">Liter</option>
+                  <option value="meters">Meters</option>
                   <option value="pack">Pack</option>
-                  <option value="sack">Sack</option>~
+                  <option value="piece" selected="selected">Piece</option>
+                  <option value="sack">Sack</option>
                 </select>
               </div>
             </div>
@@ -170,7 +176,7 @@
           
           <div class="row">
             <div class="col-12 col-sm-4">
-              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="submit" class="btn btn-primary">Save</button> | <a href="/products">Cancel</a>
             </div>
           </div>
         </form>

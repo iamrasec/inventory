@@ -2,6 +2,7 @@
 // print_r($products);
 ?>
 <main class="withpadding">
+  <a href="/incoming" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Incoming Stocks List</a>
   <h1>Add Purchase (Incoming Stocks)</h1>
   <?php if(isset($validation)): ?>
     <div class="col-12">

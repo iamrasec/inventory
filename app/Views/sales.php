@@ -4,6 +4,7 @@
 
 $output = "";
 
+$role = session()->get('role');
 $today = date("F j, Y g:i A");
 ?>
 <main class="withpadding">
@@ -12,7 +13,9 @@ $today = date("F j, Y g:i A");
     <h1>Sales List</h1>
   </div>
   <div class="col-12 col-md-2 mt-3 pt-3 pb-3 bg-white">
+    <?php if($role == 'admin'): ?>
     <a href="/sales/add" class="btn btn-primary"><i class="fas fa-plus"></i> Create Sales</a>
+    <?php endif; ?>
   </div>
 </div>
 
