@@ -2,7 +2,25 @@
 // print_r($brands);
 ?>
 <main class="withpadding">
-  <h1>Add Product</h1>
+  <div class="row">
+    <?php if(session()->get('success')): ?>
+      <div class="col col-12 col-md-12 mt-3 pt-3 pb-3 alert alert-success" role="alert">
+        <?php echo session()->get('success'); ?>
+      </div>
+    <?php endif; ?>
+    <?php if(isset($validation)): ?>
+      <div class="col-12">
+        <div class="col col-12 col-md-12 mt-3 pt-3 pb-3alert alert-danger" role="alert">
+          <?php echo $validation->listErrors(); ?>
+        </div>
+      </div>
+    <?php endif; ?>
+    <div class="col-12 col-md-10 mt-3 pt-3 pb-3 bg-white">
+      <a href="/products" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Inventory List</a>
+      <h1>Add Product</h1>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 mt-3 pt-3 pb-3 bg-white from-wrapper">
       <div class="container">
