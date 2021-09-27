@@ -2,7 +2,25 @@
 // print_r($brands);
 ?>
 <main class="withpadding">
-  <h1>Edit Product</h1>
+  <div class="row">
+    <?php if(session()->get('success')): ?>
+      <div class="col col-12 col-md-12 mt-3 pt-3 pb-3 alert alert-success" role="alert">
+        <?php echo session()->get('success'); ?>
+      </div>
+    <?php endif; ?>
+    <?php if(isset($validation)): ?>
+      <div class="col-12">
+        <div class="col col-12 col-md-12 mt-3 pt-3 pb-3alert alert-danger" role="alert">
+          <?php echo $validation->listErrors(); ?>
+        </div>
+      </div>
+    <?php endif; ?>
+    <div class="col-12 col-md-10 mt-3 pt-3 pb-3 bg-white">
+      <!--<a href="/incoming" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Incoming Stocks List</a>-->
+      <h1>Edit Product</h1>
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 mt-3 pt-3 pb-3 bg-white from-wrapper">
       <div class="container">
@@ -135,12 +153,18 @@
               <div class="form-group">
                 <label for="unit_measure">Unit</label>
                 <select class="form-control" name="unit_measure" id="unit_measure">
-                  <option value="piece" selected="selected">Piece</option>
+                  <option value="bottle">Bottle</option>
+                  <option value="box">Box</option>
+                  <option value="bundle">Bundle</option>
+                  <option value="can">Can</option>
+                  <option value="case">Case</option>
                   <option value="dozen">Dozen</option>
                   <option value="kilo">Kilo</option>
                   <option value="liter">Liter</option>
+                  <option value="meters">Meters</option>
                   <option value="pack">Pack</option>
-                  <option value="sack">Sack</option>~
+                  <option value="piece" selected="selected">Piece</option>
+                  <option value="sack">Sack</option>
                 </select>
               </div>
             </div>
@@ -173,7 +197,7 @@
               <button type="submit" class="btn btn-primary">Save</button> | <a href="/products/<?php echo $product['id']; ?>">Cancel</a>
             </div>
             <div class="col-12 col-md-1 text-right">
-              <a class="delete_product" href="#">Delete</a>
+              <a class="delete delete_product" href="#">Delete</a>
             </div>
           </div>
         </form>

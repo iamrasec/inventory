@@ -44,7 +44,7 @@ $output = "";
             $output .= '<td>'.number_format($row->price, 2, '.', ',').'</td>';
             $output .= '<td>'.number_format($row->stock_qty, 2, '.', ',').'</td>';
             $output .= '<td><a href="/products/'.$row->id.'/edit" class="edit-product edit-product-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
-            $output .= '<a href="/products/'.$row->id.'/delete" class="delete-product delete-product-'.$row->id.'" data-id="'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
+            $output .= '<a href="/products/'.$row->id.'/delete" class="delete delete-product delete-product-'.$row->id.'" data-id="'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
             $output .= '</tr>';
           }
 

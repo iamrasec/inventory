@@ -59,18 +59,18 @@ $output = "";
   </div>
   <div class="row mt-3">
     <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="stock"><strong>Stocks remaining: </strong><?php echo $product['stock_qty']; ?></div>
+      <div class="stock"><strong>Stocks remaining: </strong><?php echo number_format($product['stock_qty'], 2, '.', ','); ?></div>
     </div>
     <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="lowstock_alert"><strong>Low Stock Threshold: </strong><?php echo $product['lowstock_alert']; ?></div>
+      <div class="lowstock_alert"><strong>Low Stock Threshold: </strong><?php echo number_format($product['lowstock_alert'], 2, '.', ','); ?></div>
     </div>
   </div>
   <div class="row mt-3">
     <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="supplier_price"><strong>Supplier Price: </strong><?php echo $product['supplier_price']; ?></div>
+      <div class="supplier_price"><strong>Supplier Price: </strong>Php <?php echo number_format($product['supplier_price'], 2, '.', ','); ?></div>
     </div>
     <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="price"><strong>Price: </strong><?php echo $product['price']; ?></div>
+      <div class="price"><strong>Price: </strong>Php <?php echo number_format($product['price'], 2, '.', ','); ?></div>
     </div>
   </div>
 </main>

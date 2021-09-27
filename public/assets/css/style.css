@@ -23,6 +23,22 @@ a {
   text-align: right;
 }
 
+.delete {
+  color: #ff0000;
+}
+
+.delete:hover {
+  color: #bf0000;
+}
+
+.confirm {
+  color: #00a700;
+}
+
+.confirm:hover {
+  color: #007700;
+}
+
 /* SIDEBAR MENU */
 #sidebarMenu {
   height: 100vh;
