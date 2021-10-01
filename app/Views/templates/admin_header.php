@@ -14,13 +14,13 @@
     <link rel="stylesheet" type="text/css" href="/assets/fontawesome/css/fontawesome.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
 
-    <script type="text/javascript" src="/assets/js/scripts.js"></script>
     <script type="text/javascript" src="/assets/fontawesome/js/all.js"></script>
     <script type="text/javascript" src="/assets/js/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/assets/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="/assets/js/select2.min.js"></script>
     <script type="text/javascript" src="/assets/js/datepicker.min.js"></script>
+    <script type="text/javascript" src="/assets/js/scripts.js"></script>
     <title>Inventory Management System</title>
   </head>
   <body>

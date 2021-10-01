@@ -42,9 +42,10 @@
                       <option selected="true" disabled="disabled">Choose Supplier</option>
                       <?php 
                       $suppliers_option = "";
+                      $supp = set_value('supplier');
                       foreach($suppliers as $supcount => $suprow) {
-                        if($supcount == 0){
-                          $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
+                        if($supp == $suprow->id){
+                          $suppliers_option .= '<option value="'.$suprow->id.'" selected>'.$suprow->name.'</option>';
                         }
                         else {
                           $suppliers_option .= '<option value="'.$suprow->id.'">'.$suprow->name.'</option>';
@@ -60,7 +61,7 @@
                 <div class="col col-12 col-sm-12 col-md-2">
                   <div class="form-group">
                     <label for="date_purchased">Purchase Date</label>
-                    <input type="text" class="form-control" name="date_purchased" id="date_purchased" value="<?php echo set_value('date_purchased'); ?>">
+                    <input type="text" class="form-control datepicker" name="date_purchased" id="date_purchased" autocomplete="off" value="<?php echo set_value('date_purchased'); ?>">
                     <div class="form-note"></div>
                   </div>
                 </div>
@@ -68,7 +69,7 @@
                 <div class="col col-12 col-sm-12 col-md-2">
                   <div class="form-group">
                     <label for="eta">Estimated Arrival Date</label>
-                    <input type="text" class="form-control" name="eta" id="eta" value="<?php echo set_value('eta'); ?>">
+                    <input type="text" class="form-control datepicker" name="eta" id="eta" autocomplete="off" value="<?php echo set_value('eta'); ?>">
                     <div class="form-note"></div>
                   </div>
                 </div>
@@ -86,7 +87,7 @@
 
                 <div class="col col-12 col-sm-12 col-md-3 text-right">
                   <div class="form-group">
-                    <input type="hidden" class="form-control" id="checkout_products" name="checkout_products" value="">
+                    <input type="hidden" class="form-control" id="checkout_products" name="checkout_products" value="<?php echo set_value('checkout_products'); ?>">
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg">Save</button>
                 </div>
@@ -171,11 +172,22 @@
       $( "#date_purchased" ).datepicker();
       $( "#eta" ).datepicker();
 
+      $('.datepicker').on('click', function(e) {
+        e.preventDefault();
+        $(this).attr("autocomplete", "off");  
+      });
+
       $('.products-select').on('select2:select', function () {
         $("#add_unit").val($('.products-select :selected').data("unit"));
       });
 
       var orderData = [];
+
+      var savedProducts = $("#checkout_products").val();
+      if(savedProducts != "") {
+        prepopulateProducts(savedProducts);
+        orderData = JSON.parse(savedProducts);
+      }
 
       $('#add-product-to-list').click(function() {
         var addProductId = $('.products-select').val();
@@ -210,10 +222,13 @@
           if(alreadyAdded == 0) {
             orderData.push({
               pid: addProductId,
+              ptxt: addProductText,
               qty: addQty,
+              qunit: addUnit,
               price: addUnitPrice,
               total: addLineTotal,
             });
+            // orderData.chkTotal = checkoutTotal;
 
             checkoutTotal += addLineTotal;
 
