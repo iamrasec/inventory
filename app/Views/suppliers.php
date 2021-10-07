@@ -58,7 +58,7 @@ $output = "";
               $output .= '<td>'.$row->phone.'</td>';
               $output .= '<td>'.$row->mobile.'</td>';
               $output .= '<td><a href="/suppliers/'.$row->id.'/edit" class="edit-supplier edit-supplier-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
-              $output .= '<a href="/suppliers/'.$row->id.'/delete" class="delete-supplier delete-supplier-'.$row->id.'" data-id="'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
+              $output .= '<a href="/suppliers/'.$row->id.'/delete" class="delete delete-supplier delete-supplier-'.$row->id.'" data-id="'.$row->id.'"><i class="fas fa-trash-alt"></i></a></td>';
               $output .= '</tr>';
             }
 

@@ -15,6 +15,18 @@ echo $timeZone->getName(); */
 ?>
 <main class="withpadding">
 <div class="row">
+  <?php if(session()->get('success')): ?>
+    <div class="col col-12 col-md-12 mt-3 pt-3 pb-3 alert alert-success" role="alert">
+      <?php echo session()->get('success'); ?>
+    </div>
+  <?php endif; ?>
+  <?php if(isset($validation)): ?>
+    <div class="col-12">
+      <div class="col col-12 col-md-12 mt-3 pt-3 pb-3alert alert-danger" role="alert">
+        <?php echo $validation->listErrors(); ?>
+      </div>
+    </div>
+  <?php endif; ?>
   <div class="col-12 col-md-10 mt-3 pt-3 pb-3 bg-white">
     <h1>Sales List</h1>
   </div>
@@ -58,7 +70,7 @@ echo $timeZone->getName(); */
                 // $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i></a>&nbsp;&nbsp;&nbsp;';
                 // $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
               }
-              // $output .= '<a href="/sales/'.$row->id.'/delete" class="delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
+              $output .= '&nbsp;&nbsp;&nbsp;<a href="/sales/'.$row->id.'/delete" class="delete delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
               $output .= '</td>';
               $output .= '</tr>';
             }

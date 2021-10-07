@@ -95,6 +95,31 @@ class Sales extends BaseController {
     }
   }
 
+  public function delete_sales($id = false) {
+    $data = [];
+    helper(['form']);
+
+    $role = session()->get('role');
+    $isLoggedIn = session()->get('isLoggedIn');
+
+    if($isLoggedIn == 1) {
+      $model = new salesModel();
+      $salesProductModel = new SalesProductModel();
+
+      $newData = [
+        'id' => $id,
+      ];
+
+      $model->delete($newData);
+      $salesProductModel->where('sid', $id)->delete();
+      session()->setFlashdata('success', 'Sales Order deleted');
+      return redirect()->to('/sales');
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
   public function add_sales() {
     $data = [];
     helper(['form']);
