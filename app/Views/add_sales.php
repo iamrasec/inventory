@@ -152,7 +152,7 @@
               obj.qty += addQty;
               addLineTotal = addUnitPrice * obj.qty;
               obj.total = addLineTotal;
-              checkoutTotal += addLineTotal;
+              checkoutTotal += (addUnitPrice * addQty);
               alreadyAdded = 1;
               $('.product-'+addProductId+' .show_qty').text(obj.qty);
               $('.product-'+addProductId+' .show_linetotal').text(thousands_separators(addLineTotal.toFixed(2)));
@@ -203,12 +203,37 @@
         return false;
       });
 
-      $(".delete_line_product a").on('click', function() {
+      $(document).on('click', ".delete_line_product a", function() {
         console.log("Delete Line Item");
 
         var delProductID = $(this).data('delid');
+        var checkoutTotal = Number($('#checkout_total').val());
 
         console.log(delProductID);
+
+        var remArrID = 0;
+        $.each(orderData, function(i, obj) {
+          if(obj.pid == delProductID) {
+            remArrID = i;
+            checkoutTotal -= obj.total;
+          }
+        });
+
+        orderData.splice(remArrID,1);
+
+        /* $.each(orderData, function(i) {
+          var obj = $(orderData).eq(0);
+          if(obj.pid == delProductID) {
+            orderData.splice(0,1);
+          }
+        }); */
+
+        console.log(orderData);
+
+        $('#checkout_total').val(checkoutTotal);
+        $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
+
+        $("#checkout_products").val(JSON.stringify(orderData));
 
         $("#cart_items .product-"+delProductID).remove();
 

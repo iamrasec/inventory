@@ -5,7 +5,13 @@
 $output = "";
 
 $role = session()->get('role');
+date_default_timezone_set('Asia/Manila');
+
 $today = date("F j, Y");
+
+/* $date = new DateTime();
+$timeZone = $date->getTimezone();
+echo $timeZone->getName(); */
 ?>
 <main class="withpadding">
 <div class="row">
