@@ -13,6 +13,7 @@ $output = "";
 
   <div class="row mt-3">
     <div class="col-12 col-md-8 mt-1 pt-1 pb-1 bg-white">
+      <a href="/sales" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Sales Order List</a>
       <h1>Sales Order # <?php echo $sales['id']; ?></h1>
       <div class="sales_receipt"><strong>Receipt No.:</strong> <?php echo $sales['receipt']; ?></div>
       <div class="sales_customer"><strong>Customer Name:</strong> <?php echo $sales['customer']; ?></div>

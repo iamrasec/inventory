@@ -5,7 +5,7 @@
 $output = "";
 
 $role = session()->get('role');
-$today = date("F j, Y g:i A");
+$today = date("F j, Y");
 ?>
 <main class="withpadding">
 <div class="row">
@@ -36,22 +36,26 @@ $today = date("F j, Y g:i A");
       <tbody>
           <?php 
           foreach($sales as $row) {
-            $output .= '<tr>';
-            $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->id.'</a></td>';
-            $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->receipt.'</a></td>';
-            $output .= '<td>'.$row->customer.'</td>';
-            $output .= '<td>Php '.number_format($row->total, 2, '.', ',').'</td>';
-            $output .= '<td>'.(($row->status == "0") ? "pending" : "released").'</td>';
-            $output .= '<td>'.date("F j, Y g:i A", strtotime($row->order_date)).'</td>';
-            $output .= '<td>';
-            if($row->status == "0") {
-              $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Release</a>';
-              // $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i></a>&nbsp;&nbsp;&nbsp;';
-              // $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+            $order_date = date("F j, Y", strtotime($row->order_date));
+
+            if($order_date == $today) {
+              $output .= '<tr>';
+              $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->id.'</a></td>';
+              $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->receipt.'</a></td>';
+              $output .= '<td>'.$row->customer.'</td>';
+              $output .= '<td>Php '.number_format($row->total, 2, '.', ',').'</td>';
+              $output .= '<td>'.(($row->status == "0") ? "pending" : "released").'</td>';
+              $output .= '<td>'.date("F j, Y g:i A", strtotime($row->order_date)).'</td>';
+              $output .= '<td>';
+              if($row->status == "0") {
+                $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Release</a>';
+                // $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i></a>&nbsp;&nbsp;&nbsp;';
+                // $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+              }
+              // $output .= '<a href="/sales/'.$row->id.'/delete" class="delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
+              $output .= '</td>';
+              $output .= '</tr>';
             }
-            // $output .= '<a href="/sales/'.$row->id.'/delete" class="delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
-            $output .= '</td>';
-            $output .= '</tr>';
           }
 
           echo $output;
