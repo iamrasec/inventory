@@ -78,6 +78,7 @@
                     <div class="col col-12 col-sm-12 col-md-2 show_unitprice_header"><strong>Price</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_unit_header"><strong>Unit</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_linetotal_header"><strong>Total</strong></div>
+                    <div class="col col-12 col-sm-12 col-md-2 show_action_header"><strong>Action</strong></div>
                   </div>
                 </div>
               </div>
@@ -182,6 +183,7 @@
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unitprice">'+thousands_separators(addUnitPrice.toFixed(2))+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unit">'+addUnit+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_linetotal">'+thousands_separators(addLineTotal.toFixed(2))+'</div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-2 delete_line_product"><a href="#" data-delid="'+addProductId+'">X</a></div>';
             addProduct += '</div>';
             addProduct += '</div>';
             addProduct += '</div>';
@@ -198,6 +200,18 @@
           // console.log(orderData);
           console.log(checkoutTotal);
         }
+        return false;
+      });
+
+      $(".delete_line_product a").on('click', function() {
+        console.log("Delete Line Item");
+
+        var delProductID = $(this).data('delid');
+
+        console.log(delProductID);
+
+        $("#cart_items .product-"+delProductID).remove();
+
         return false;
       });
     });

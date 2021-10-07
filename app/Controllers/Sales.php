@@ -70,25 +70,25 @@ class Sales extends BaseController {
     $isLoggedIn = session()->get('isLoggedIn');
 
     if($isLoggedIn == 1) {
+      $model = new salesModel();
+      $data['sales'] = $model->where('id', $id)->first();
+
+      $db = \Config\Database::connect();
+      $products = $db->table('sales_products');
+      $products->select('sales_products.*, products.name, products.code, products.size, products.unit_measure');
+      $products->join('products', 'sales_products.pid = products.id', 'inner');
+      $products->where('sid', $id);
+      $query_products = $products->get();
+      $data['products'] = $query_products->getResult();
+
       if($role == 'admin') {
-        $model = new salesModel();
-        $data['sales'] = $model->where('id', $id)->first();
-
-        $db = \Config\Database::connect();
-        $products = $db->table('sales_products');
-        $products->select('sales_products.*, products.name, products.code, products.size, products.unit_measure');
-        $products->join('products', 'sales_products.pid = products.id', 'inner');
-        $products->where('sid', $id);
-        $query_products = $products->get();
-        $data['products'] = $query_products->getResult();
-
         echo view('templates/admin_header', $data);
-        echo view('view_sales_order');
-        echo view('templates/footer');
       }
       else {
-        return redirect()->to('/');
+        echo view('templates/header', $data);
       }
+      echo view('view_sales_order');
+      echo view('templates/footer');
     }
     else {
       return redirect()->to('/');

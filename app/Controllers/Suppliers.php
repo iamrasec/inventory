@@ -73,7 +73,6 @@ class Suppliers extends BaseController {
         if($this->request->getPost()) {
           $rules = [
             'name' => 'required|min_length[3]',
-            'code' => 'required|min_length[3]|is_unique[suppliers.code]',
           ];
 
           if(!$this->validate($rules)) {
@@ -157,7 +156,6 @@ class Suppliers extends BaseController {
         if($this->request->getPost()) {
           $rules = [
             'name' => 'required|min_length[3]',
-            'code' => 'required|min_length[3]|is_unique[suppliers.code]',
           ];
 
           if(!$this->validate($rules)) {

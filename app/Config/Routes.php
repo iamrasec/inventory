@@ -65,6 +65,16 @@ $routes->get('incoming', 'Incoming::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'incoming/add', 'Incoming::add_purchase', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'incoming/(:num)/received', 'Incoming::received/$1', ['filter' => 'auth']);
 
+// Brands
+$routes->get('brands', 'Brands::index', ['filter' => 'auth']);
+$routes->get('brands/(:num)', 'Brands::view_brand/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'brands/add', 'Brands::add_brand', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'brands/(:num)/edit', 'Brands::edit_brand/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'brands/(:num)/delete', 'Brands::delete_brand/$1', ['filter' => 'auth']);
+
+//Export
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

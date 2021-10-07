@@ -115,7 +115,7 @@
               </div>
             </div>
 
-            <div class="col-12 col-sm-12 mb-3">
+            <!--<div class="col-12 col-sm-12 mb-3">
               <div class="form-group">
                 <label for="supplier">Supplier</label>
                 <select class="form-control" name="supplier" id="supplier">
@@ -133,7 +133,7 @@
                   ?>
                 </select>
               </div>
-            </div>
+            </div>-->
 
             <div class="col-6 col-sm-6 col-md-2 mb-3">
               <div class="form-group">

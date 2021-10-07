@@ -106,7 +106,6 @@ class Products extends BaseController {
         if($this->request->getPost()) {
           $rules = [
             'name' => 'required|min_length[3]',
-            'supplier' => 'required',
           ];
 
           if($this->request->getPost('code') != $data['product']['code']) {
@@ -170,12 +169,12 @@ class Products extends BaseController {
               'unit_measure' => $this->request->getVar('unit_measure'),
               'supplier_price' => $this->request->getVar('supplier_price'),
               'price' => $this->request->getVar('price'),
-              'supplier' => $this->request->getVar('supplier'),
+              // 'supplier' => $this->request->getVar('supplier'),
               'lowstock_alert' => $this->request->getVar('lowstock_alert'),
             ];
 
             $model->save($newData);
-            session()->setFlashdata('success', 'Supplier successfuly updated');
+            session()->setFlashdata('success', 'Product successfuly updated');
 				    return redirect()->to('/products/'.$id);
           }
         }
@@ -248,7 +247,6 @@ class Products extends BaseController {
         if($this->request->getPost()) {
           $rules = [
             'name' => 'required|min_length[3]',
-            'code' => 'is_unique[products.code]',
           ];
 
           if($this->request->getPost('brand') == 'new_brand') {
@@ -307,7 +305,7 @@ class Products extends BaseController {
               'unit_measure' => $this->request->getVar('unit_measure'),
               'supplier_price' => $this->request->getVar('supplier_price'),
               'price' => $this->request->getVar('price'),
-              'supplier' => $this->request->getVar('supplier'),
+              // 'supplier' => $this->request->getVar('supplier'),
               'lowstock_alert' => $this->request->getVar('lowstock_alert'),
             ];
 
