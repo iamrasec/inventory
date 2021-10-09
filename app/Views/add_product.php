@@ -201,4 +201,12 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#brand').select2();
+      $('#category').select2();
+    });
+  </script>
+
 </main>
