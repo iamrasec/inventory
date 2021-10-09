@@ -41,37 +41,35 @@ $output = "";
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="brand"><strong>Brand: </strong><?php echo $brand['name']; ?></div>
     </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="category"><strong>Category: </strong><?php echo $category['name']; ?></div>
     </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="supplier"><strong>Supplier: </strong><?php echo $supplier['name']; ?></div>
-    </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="size"><strong>Size: </strong><?php echo $product['size']; ?></div>
     </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="unit"><strong>Unit: </strong><?php echo $product['unit_measure']; ?></div>
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
+      <div class="price"><strong>Price: </strong>Php <?php echo number_format($product['price'], 2, '.', ','); ?></div>
+    </div>
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="stock"><strong>Stocks remaining: </strong><?php echo number_format($product['stock_qty'], 2, '.', ','); ?></div>
     </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="lowstock_alert"><strong>Low Stock Threshold: </strong><?php echo number_format($product['lowstock_alert'], 2, '.', ','); ?></div>
+    </div>
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
+      
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="supplier_price"><strong>Supplier Price: </strong>Php <?php echo number_format($product['supplier_price'], 2, '.', ','); ?></div>
-    </div>
-    <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
-      <div class="price"><strong>Price: </strong>Php <?php echo number_format($product['price'], 2, '.', ','); ?></div>
-    </div>
+    
   </div>
 </main>
 <?php endif; ?>
