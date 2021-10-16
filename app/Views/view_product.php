@@ -2,6 +2,8 @@
 // print_r(session()->get());
 // print_r($product);
 
+date_default_timezone_set('Asia/Manila');
+
 $output = "";
 ?>
 
@@ -59,17 +61,73 @@ $output = "";
       <div class="price"><strong>Price: </strong>Php <?php echo number_format($product['price'], 2, '.', ','); ?></div>
     </div>
     <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
+    <div class="supplier_price"><strong>Average Supplier Price: </strong>Php 0.00</div>
+    </div>
+    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="stock"><strong>Stocks remaining: </strong><?php echo number_format($product['stock_qty'], 2, '.', ','); ?></div>
     </div>
     <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
       <div class="lowstock_alert"><strong>Low Stock Threshold: </strong><?php echo number_format($product['lowstock_alert'], 2, '.', ','); ?></div>
     </div>
-    <div class="col-12 col-md-3 mt-1 pt-1 pb-1 bg-white">
-      
+  </div>
+  <div class="row mt-5">
+    <div class="col-12 col-md-12 mt-1 pt-1 pb-1 bg-white">
+      <hr />
+      <h5><strong>Suppliers</strong></h5>
+      <?php if(!empty($suppliers)): ?>
+        <table id="suppliers_list" class="table table-striped table-bordered custom-list-table" style="width:100%">
+          <thead>
+              <tr>
+                <th>Name</th>
+                <th>Last Purchased Quantity</th>
+                <th>Last Purchase Price</th>
+                <th>Last Purchase Date</th>
+                <th>Total Quantity Purchased</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php 
+              foreach($suppliers as $row) {
+                /* if(!empty($row->last_purchase)) {
+                  print_r($row->last_purchase[0]);
+                } */
+
+                if(!empty($row->last_purchase)) {
+                  $output .= '<tr>';
+                  $output .= '<td class="name"><a href="/suppliers/'.$row->id.'" class="view-link-data">'.$row->name.'</a></td>';
+                  $output .= '<td>'.number_format($row->last_purchase[0]->qty, 2, '.', ',').'</td>';
+                  $output .= '<td>Php '.number_format($row->last_purchase[0]->price, 2, '.', ',').'</td>';
+                  $output .= '<td>'.date("F j, Y g:i A", strtotime($row->last_purchase[0]->purchase_date)).'</td>';
+                  $output .= '<td>'.number_format($row->total, 2, '.', ',').'</td>';
+                  $output .= '</tr>';
+                }
+              }
+
+              echo $output;
+              ?>
+          </tbody>
+          <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Last Purchased Quantity</th>
+                <th>Last Purchase Price</th>
+                <th>Last Purchase Date</th>
+                <th>Total Quantity Purchased</th>
+              </tr>
+          </tfoot>
+        </table>
+      <?php endif; ?>
     </div>
+    <pre><?php // print_r($suppliers); ?></pre>
   </div>
-  <div class="row mt-3">
-    
-  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#suppliers_list').DataTable({
+        "order": [[3, "desc"]],
+      });
+    });
+  </script>
+
 </main>
 <?php endif; ?>

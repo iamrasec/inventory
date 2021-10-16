@@ -13,6 +13,11 @@ $output = "";
 
   <div class="row mt-3">
     <div class="col-12 col-md-8 mt-1 pt-1 pb-1 bg-white">
+      <?php if(isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'suppliers') === false): ?>
+        <a href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Product Page</a>
+      <?php else: ?>
+        <a href="/suppliers" class="mt-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Suppliers List</a>
+      <?php endif; ?>
       <h1><?php echo $supplier['name']; ?></h1>
       <div class="supplier_code">Supplier Code: <strong><?php echo $supplier['code']; ?></strong></div>
     </div>
@@ -45,4 +50,19 @@ $output = "";
       <div class="province"><strong>Province: </strong><?php echo $supplier['province']; ?></div>
     </div>
   </div>
+
+  <div class="row mt-5">
+    <div class="col-12 col-md-12 mt-1 pt-1 pb-1 bg-white">
+      <hr />
+      <h5><strong>Products</strong></h5>
+    </div>
+  </div>
+
+  <pre>
+  <?php 
+    /* if(isset($_SERVER['HTTP_REFERER'])) {
+      print_r($_SERVER['HTTP_REFERER']); 
+    } */
+  ?>
+  </pre>
 </main>

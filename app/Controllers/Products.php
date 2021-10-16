@@ -5,6 +5,7 @@ use App\Models\ProductModel;
 use App\Models\BrandModel;
 use App\Models\CategoryModel;
 use App\Models\SupplierModel;
+use App\Models\IncomingModel;
 
 class Products extends BaseController {
   public function index() {
@@ -62,7 +63,47 @@ class Products extends BaseController {
         // print_r($data['category']);
 
         $suppliers = new SupplierModel();
-        $data['supplier'] = $suppliers->where('id', $data['product']['supplier'])->first();
+        $query_suppliers = $suppliers->table('suppliers')->get();
+        $data['suppliers'] = $query_suppliers->getResult();
+
+        $db = \Config\Database::connect();
+
+        foreach($data['suppliers'] as $supp_id => $supp_list) {
+          $suppdata = $db->table('incoming');
+          $suppdata->select('SUM(qty) as total');
+          $suppdata->where(['pid' => $id, 'supplier_id' => $supp_list->id]);
+          $query_suppdata = $suppdata->get();
+          $total = $query_suppdata->getResult();
+
+          if($total > 0) {
+            $data['suppliers'][$supp_id]->total = $total[0]->total;
+          }
+          
+
+          $suppdata->select('id, qty, price, purchase_date');
+          $suppdata->where(['pid' => $id, 'supplier_id' => $supp_list->id]);
+          $suppdata->orderBy('purchase_date', 'DESC');
+          $suppdata->orderBy('id', 'DESC');
+          $suppdata->limit(1);
+          $query_last_purchase = $suppdata->get();
+          $data['suppliers'][$supp_id]->last_purchase = $query_last_purchase->getResult();
+        }
+
+        // echo "<pre>".print_r($data['suppliers'], 1)."</pre>";
+
+        // $incoming = new IncomingModel();
+        // $$query_incoming = $incoming->where('pid', $id)->get();
+        // $data['incoming'] = $query_incoming->getResult();
+
+        /* $db = \Config\Database::connect();
+        $incoming = $db->table('incoming');
+        $incoming->select('incoming.*, suppliers.name as supplier_name, suppliers.id as supplier_id');
+        $incoming->join('suppliers', 'incoming.supplier_id = suppliers.id', 'inner');
+        $incoming->where('incoming.pid', $id);
+        $incoming->orderBy('suppliers.name', 'ASC');
+        $incoming->orderBy('incoming.purchase_date', 'DESC');
+        $query_incoming = $incoming->get();
+        $data['incoming'] = $query_incoming->getResult(); */
 
         // print_r($data['supplier']);
 
