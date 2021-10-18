@@ -26,6 +26,40 @@
       <div class="container">
         <form class="" action="/sales/add" method="post">
           <div class="row">
+            <div class="col col-12 col-sm-12 col-md-3 mb-3 form_reference_area">
+              <div class="form-group">
+                <label for="receipt">Reference Number (Receipt)</label>
+                <input type="text" class="form-control" name="receipt" id="receipt" value="<?php echo set_value('receipt'); ?>">
+              </div>
+
+              <div class="form-group">
+                <label for="customer">Customer Name</label>
+                <input type="text" class="form-control" name="customer" id="customer" value="<?php echo set_value('customer'); ?>">
+                <div class="form-note"></div>
+              </div>
+
+              <hr class="mt-3 mb-3">
+
+              <div class="row">
+                <div class="col col-12 col-sm-12 col-md-12">
+                  <div class="form-group">
+                    <h3>Total</h3>
+                    <div class="show_checkout_total"></div>
+                    <input type="hidden" class="form-control" id="checkout_total" name="total" value="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-12 col-sm-4">
+                  <div class="form-group">
+                    <input type="hidden" class="form-control" id="checkout_products" name="checkout_products" value="">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+
             <div class="col col-12 col-sm-12 col-md-9 mb-3">
               <h5>Add Products to Cart</h5>
               <div class="row add-products-wrap">
@@ -71,11 +105,12 @@
 
               <h3>Cart Items</h3>
               <div class="row">
-                <div class="col col-12 col-sm-12 col-md-6 show_name_header"><strong>Product Name</strong></div>
-                <div class="col col-12 col-sm-12 col-md-6">
+                <div class="col col-12 col-sm-12 col-md-4 show_name_header"><strong>Product Name</strong></div>
+                <div class="col col-12 col-sm-12 col-md-8">
                   <div class="row">
-                    <div class="col col-12 col-sm-12 col-md-3 show_qty_header"><strong>Quantity</strong></div>
+                    <div class="col col-12 col-sm-12 col-md-2 show_qty_header"><strong>Qty</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_unitprice_header"><strong>Price</strong></div>
+                    <div class="col col-12 col-sm-12 col-md-2 show_discounted_price_header"><strong>Discount Price</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_unit_header"><strong>Unit</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_linetotal_header"><strong>Total</strong></div>
                     <div class="col col-12 col-sm-12 col-md-2 show_action_header"><strong>Action</strong></div>
@@ -85,39 +120,7 @@
               <div id="cart_items"></div>
 
             </div>
-            <div class="col col-12 col-sm-12 col-md-3 mb-3 form_reference_area">
-              <div class="form-group">
-                <label for="receipt">Reference Number (Receipt)</label>
-                <input type="text" class="form-control" name="receipt" id="receipt" value="<?php echo set_value('receipt'); ?>">
-              </div>
-
-              <div class="form-group">
-                <label for="customer">Customer Name</label>
-                <input type="text" class="form-control" name="customer" id="customer" value="<?php echo set_value('customer'); ?>">
-                <div class="form-note"></div>
-              </div>
-
-              <hr class="mt-3 mb-3">
-
-              <div class="row">
-                <div class="col col-12 col-sm-12 col-md-12">
-                  <div class="form-group">
-                    <h3>Total</h3>
-                    <div class="show_checkout_total"></div>
-                    <input type="hidden" class="form-control" id="checkout_total" name="total" value="">
-                  </div>
-                </div>
-              </div>
-
-              <div class="row mt-3">
-                <div class="col-12 col-sm-4">
-                  <div class="form-group">
-                    <input type="hidden" class="form-control" id="checkout_products" name="checkout_products" value="">
-                  </div>
-                  <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </form>
       </div>
@@ -176,11 +179,12 @@
             checkoutTotal += addLineTotal;
 
             var addProduct = '<div class="row added_product product-'+addProductId+'">';
-            addProduct += '<div class="col-12 col-sm-12 col-md-6 show_name">'+addProductText+'</div>';
-            addProduct += '<div class="col-12 col-sm-12 col-md-6">';
+            addProduct += '<div class="col-12 col-sm-12 col-md-4 show_name">'+addProductText+'</div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-8">';
             addProduct += '<div class="row">';
-            addProduct += '<div class="col-12 col-sm-12 col-md-3 show_qty">'+addQty+'</div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_qty">'+addQty+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unitprice">'+thousands_separators(addUnitPrice.toFixed(2))+'</div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_discounted_price"><input type="text" name="discprice-'+addProductId+'" class="discount-price" /></div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unit">'+addUnit+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_linetotal">'+thousands_separators(addLineTotal.toFixed(2))+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 delete_line_product"><a href="#" data-delid="'+addProductId+'">X</a></div>';

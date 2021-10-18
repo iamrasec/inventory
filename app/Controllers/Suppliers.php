@@ -2,6 +2,8 @@
 namespace App\Controllers;
 
 use App\Models\SupplierModel;
+use App\Models\ProductModel;
+use App\Models\IncomingModel;
 
 class Suppliers extends BaseController {
   

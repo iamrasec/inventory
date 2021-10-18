@@ -39,6 +39,12 @@ a {
   color: #007700;
 }
 
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
 /* SIDEBAR MENU */
 #sidebarMenu {
   height: 100vh;
@@ -132,5 +138,8 @@ a {
   background: #e8ead9;
   padding: 20px 10px;
   border: 1px solid #5a6767;
+}
+.discount-price {
+  width: 75px;
 }
 /* END: CREATE SALES ORDER */
