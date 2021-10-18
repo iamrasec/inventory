@@ -142,4 +142,10 @@ a {
 .discount-price {
   width: 75px;
 }
+#cart_items .added_product {
+  padding: 5px 0;
+}
+#cart_items .added_product:nth-child(odd) {
+  background: #c0e5ff;
+}
 /* END: CREATE SALES ORDER */
