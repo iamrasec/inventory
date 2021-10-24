@@ -18,6 +18,7 @@ $output = "";
       <div class="sales_receipt"><strong>Receipt No.:</strong> <?php echo $sales['receipt']; ?></div>
       <div class="sales_customer"><strong>Customer Name:</strong> <?php echo $sales['customer']; ?></div>
       <div class="date_added" date-data="<?php echo $sales['order_date']; ?>"><strong>Order Date: </strong><?php echo date("F j, Y g:i A", strtotime($sales['order_date'])); ?></div>
+      <div class="sales_total"><strong>Total:</strong> Php <?php echo $sales['total']; ?></div>
     </div>
     
     <div class="col-12 col-md-4 mt-1 pt-1 pb-1 bg-white">
@@ -39,9 +40,9 @@ $output = "";
         <div class="col col-12 col-sm-12 col-md-6">
           <div class="row">
             <div class="col col-12 col-sm-12 col-md-3 show_qty_header"><strong>Quantity</strong></div>
-            <div class="col col-12 col-sm-12 col-md-2 show_unitprice_header"><strong>Price</strong></div>
-            <div class="col col-12 col-sm-12 col-md-2 show_unit_header"><strong>Unit</strong></div>
-            <div class="col col-12 col-sm-12 col-md-2 show_linetotal_header"><strong>Total</strong></div>
+            <div class="col col-12 col-sm-12 col-md-3 show_unitprice_header"><strong>Price</strong></div>
+            <div class="col col-12 col-sm-12 col-md-3 show_unit_header"><strong>Unit</strong></div>
+            <div class="col col-12 col-sm-12 col-md-3 show_linetotal_header"><strong>Total</strong></div>
           </div>
         </div>
       </div>
@@ -52,9 +53,16 @@ $output = "";
             <div class="col col-12 col-sm-12 col-md-6">
               <div class="row">
                 <div class="col-12 col-sm-12 col-md-3 show_qty"><?php echo $value->qty; ?></div>
-                <div class="col-12 col-sm-12 col-md-2 show_unitprice"><?php echo number_format($value->price, 2, '.', ','); ?></div>
-                <div class="col-12 col-sm-12 col-md-2 show_unit"><?php echo $value->unit_measure; ?></div>
-                <div class="col-12 col-sm-12 col-md-2 show_linetotal"><?php echo number_format($value->total, 2, '.', ','); ?></div>
+                <?php if($value->discounted == 1): ?>
+                  <div class="col-12 col-sm-12 col-md-3 show_unitprice"><span class="discounted_price"><?php echo number_format($value->price, 2, '.', ','); ?></span> <?php echo number_format($value->discounted_price, 2, '.', ','); ?></div>
+                  <div class="col-12 col-sm-12 col-md-3 show_unit"><?php echo $value->unit_measure; ?></div>
+                  <div class="col-12 col-sm-12 col-md-3 show_linetotal"><span class="discounted_price"><?php echo number_format($value->total, 2, '.', ','); ?></span> <?php echo number_format($value->discounted_total, 2, '.', ','); ?></div>
+                <?php else: ?>
+                  <div class="col-12 col-sm-12 col-md-3 show_unitprice"><?php echo number_format($value->price, 2, '.', ','); ?></div>
+                  <div class="col-12 col-sm-12 col-md-3 show_unit"><?php echo $value->unit_measure; ?></div>
+                  <div class="col-12 col-sm-12 col-md-3 show_linetotal"><?php echo number_format($value->total, 2, '.', ','); ?></div>
+                <?php endif; ?>
+                
               </div>
             </div>
           </div>
@@ -62,4 +70,5 @@ $output = "";
       </div>
     </div>
   </div>
+  <pre><?php // print_r($sales); ?></pre>
 </main>

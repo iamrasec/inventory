@@ -185,6 +185,9 @@ class Sales extends BaseController {
               'qty' => number_format($chck_prod->qty, 2, '.', ''),
               'price' => number_format($chck_prod->price, 2, '.', ''),
               'total' => number_format($chck_prod->total, 2, '.', ''),
+              'discounted' => $chck_prod->isDiscounted,
+              'discounted_price' => number_format($chck_prod->DiscountedPrice, 2, '.', ''),
+              'discounted_total' => number_format($chck_prod->DiscountedTotal, 2, '.', ''),
             ];
 
             $salesProductModel->save($products_arr);

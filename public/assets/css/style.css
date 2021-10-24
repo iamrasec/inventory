@@ -149,3 +149,9 @@ a {
   background: #c0e5ff;
 }
 /* END: CREATE SALES ORDER */
+
+.discounted_price {
+  text-decoration: line-through;
+  font-size: 12px;
+  color: #ff0000;
+}

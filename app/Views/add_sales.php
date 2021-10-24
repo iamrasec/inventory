@@ -147,11 +147,17 @@
         var addUnitPrice = Number($('.products-select :selected').data("price"));
         var addLineTotal = addQty * addUnitPrice;
         var checkoutTotal = Number($('#checkout_total').val());
+        var isDiscounted = 0;
+        var DiscountedPrice = 0;
+        var DiscountedTotal = 0;
 
         if(addProductId != "") {
           var alreadyAdded = 0;
           $.each(orderData, function(i, obj) {
             if(obj.pid == addProductId) {
+              isDiscounted = obj.isDiscounted;
+              DiscountedPrice = obj.DiscountedPrice;
+              DiscountedTotal = obj.DiscountedTotal;
               obj.qty += addQty;
               addLineTotal = addUnitPrice * obj.qty;
               obj.total = addLineTotal;
@@ -160,7 +166,7 @@
               $('.product-'+addProductId+' .show_qty').text(obj.qty);
               $('.product-'+addProductId+' .show_linetotal').text(thousands_separators(addLineTotal.toFixed(2)));
               $('#checkout_total').val(checkoutTotal);
-              $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
+              $('.show_checkout_total').fadeOut(10).text('Php '+thousands_separators(checkoutTotal.toFixed(2))).fadeIn(10);
               $('.products-select').val(null).trigger('change');
               $('#add_quantity').val(1);
               $('#add_unit').val("");
@@ -174,6 +180,9 @@
               qty: addQty,
               price: addUnitPrice,
               total: addLineTotal,
+              isDiscounted: isDiscounted,
+              DiscountedPrice: DiscountedPrice,
+              DiscountedTotal: DiscountedTotal,
             });
 
             checkoutTotal += addLineTotal;
@@ -184,7 +193,7 @@
             addProduct += '<div class="row">';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_qty">'+addQty+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unitprice">'+thousands_separators(addUnitPrice.toFixed(2))+'</div>';
-            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_discounted_price"><input type="text" name="discprice-'+addProductId+'" class="discount-price" /></div>';
+            addProduct += '<div class="col-12 col-sm-12 col-md-2 show_discounted_price"><input type="text" name="discprice-'+addProductId+'" class="discount-price" data-pid="'+addProductId+'" /></div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_unit">'+addUnit+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 show_linetotal">'+thousands_separators(addLineTotal.toFixed(2))+'</div>';
             addProduct += '<div class="col-12 col-sm-12 col-md-2 delete_line_product"><a href="#" data-delid="'+addProductId+'">X</a></div>';
@@ -193,7 +202,7 @@
             addProduct += '</div>';
             $('#cart_items').prepend(addProduct);
             $('#checkout_total').val(checkoutTotal);
-            $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
+            $('.show_checkout_total').fadeOut(10).text('Php '+thousands_separators(checkoutTotal.toFixed(2))).fadeIn(10);
             $('.products-select').val(null).trigger('change');
             $('#add_quantity').val(1);
             $('#add_unit').val("");
@@ -205,6 +214,60 @@
           console.log(checkoutTotal);
         }
         return false;
+      });
+
+      $(document).on('change', ".added_product .discount-price", function() {
+        console.log("Added discount");
+
+        var discountVal = Number($(this).val());
+        var isDiscounted = 0;
+        var DiscountedPrice = 0;
+        var DiscountedTotal = 0;
+        var LineTotal = 0;
+        var DiscountDiff = 0;
+        var checkoutTotal = Number($('#checkout_total').val());
+        var addProductId = $(this).data("pid");
+
+        console.log('Current Total: '+checkoutTotal);
+
+        if(discountVal != "" && discountVal > 0) {
+          isDiscounted = 1;
+          DiscountedPrice = discountVal;
+        }
+        else {
+          isDiscounted = 0;
+          DiscountedPrice = 0;
+        }
+
+        $.each(orderData, function(i, obj) {
+          if(obj.pid == addProductId) {
+            obj.isDiscounted = isDiscounted;
+            obj.DiscountedPrice = DiscountedPrice;
+            LineTotal = obj.total;
+            DiscountedTotal = DiscountedPrice * obj.qty;
+            obj.DiscountedTotal = DiscountedTotal;
+            console.log('Line Total: '+LineTotal);
+            console.log('Discounted Total: '+DiscountedTotal);
+            return false;
+          }
+        });
+
+        DiscountDiff = LineTotal - DiscountedTotal;
+        console.log('Discounted Difference: '+DiscountDiff);
+
+        if(DiscountDiff > 0) {
+          checkoutTotal -= DiscountDiff;
+          $('#checkout_total').val(checkoutTotal);
+          $('.show_checkout_total').fadeOut(10).text('Php '+thousands_separators(checkoutTotal.toFixed(2))).fadeIn(10);
+        }
+
+        $("#checkout_products").val(JSON.stringify(orderData));
+
+        console.log(orderData);
+        console.log('Discount Price: '+discountVal);
+        console.log('isDiscounted: '+isDiscounted);
+        console.log('Discounted Price: '+DiscountedPrice);
+        console.log('Product ID: '+addProductId);
       });
 
       $(document).on('click', ".delete_line_product a", function() {
@@ -219,7 +282,12 @@
         $.each(orderData, function(i, obj) {
           if(obj.pid == delProductID) {
             remArrID = i;
-            checkoutTotal -= obj.total;
+            if(obj.isDiscounted == 1) {
+              checkoutTotal -= obj.DiscountedTotal;
+            }
+            else {
+              checkoutTotal -= obj.total;
+            }
           }
         });
 
@@ -235,7 +303,7 @@
         console.log(orderData);
 
         $('#checkout_total').val(checkoutTotal);
-        $('.show_checkout_total').text('Php '+thousands_separators(checkoutTotal.toFixed(2)));
+        $('.show_checkout_total').fadeOut(10).text('Php '+thousands_separators(checkoutTotal.toFixed(2))).fadeIn(10);
 
         $("#checkout_products").val(JSON.stringify(orderData));
 
