@@ -59,6 +59,7 @@ $routes->get('sales', 'Sales::index', ['filter' => 'auth']);
 $routes->get('sales/(:num)', 'Sales::view_sales_order/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'sales/add', 'Sales::add_sales', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'sales/(:num)/release', 'Sales::confirm_release/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'sales/(:num)/edit', 'Sales::edit_sales/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'sales/(:num)/delete', 'Sales::delete_sales/$1', ['filter' => 'auth']);
 
 // Purchases

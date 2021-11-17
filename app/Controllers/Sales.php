@@ -7,6 +7,8 @@ use App\Models\BrandModel;
 use App\Models\SalesModel;
 use App\Models\SalesProductModel;
 
+use App\Libraries\ProductLib;
+
 class Sales extends BaseController {
   public function index() {
     $data = [];
@@ -106,6 +108,8 @@ class Sales extends BaseController {
       $model = new salesModel();
       $salesProductModel = new SalesProductModel();
 
+      $this->delete_sales_products($id);
+
       $newData = [
         'id' => $id,
       ];
@@ -116,8 +120,61 @@ class Sales extends BaseController {
       return redirect()->to('/sales');
     }
     else {
-      return redirect()->to('/');
+      // return redirect()->to('/');
     }
+  }
+
+  private function delete_sales_products($sid = null) {
+    $productModel = new ProductModel();
+    $salesProductModel = new SalesProductModel();
+    $productLib = new ProductLib();
+
+    $query_sproducts = $salesProductModel->where('sid', $sid)->get();
+    $sproducts = $query_sproducts->getResult();
+
+    // echo "<pre>".print_r($sproducts, 1)."</pre>";
+
+    foreach($sproducts as $sproduct) {
+      // echo "<pre>".print_r($sproduct, 1)."</pre>";
+      $prod = $productLib->add_qty($sproduct->pid, $sproduct->qty);
+    }
+  }
+
+  public function edit_sales($id = false) {
+    $data = [];
+    helper(['form']);
+
+    $role = session()->get('role');
+    $isLoggedIn = session()->get('isLoggedIn');
+
+    if($isLoggedIn == 1) {
+      $products = new ProductModel();
+      $query_products = $products->where(['status' => 1, 'price > ' => 0, 'stock_qty > ' => 0])->get();
+      $data['products'] = $query_products->getResult();
+
+      $categories = new CategoryModel();
+      $query_categories = $categories->table('categories')->get();
+      $data['categories'] = $query_categories->getResult();
+
+      $brands = new BrandModel();
+      $query_brands = $brands->table('brands')->get();
+      $data['brands'] = $query_brands->getResult();
+
+
+
+      if($role == 'admin') {
+        echo view('templates/admin_header', $data);
+      }
+      else {
+        echo view('templates/header', $data);
+      }
+      echo view('edit_sales');
+      echo view('templates/footer');
+    }
+    else {
+      return redirect()->to('/');
+    }    
+
   }
 
   public function add_sales() {

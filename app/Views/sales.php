@@ -56,7 +56,7 @@ echo $timeZone->getName(); */
           foreach($sales as $row) {
             $order_date = date("F j, Y", strtotime($row->order_date));
 
-            if($order_date == $today) {
+            // if($order_date == $today) {
               $output .= '<tr>';
               $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->id.'</a></td>';
               $output .= '<td><a href="/sales/'.$row->id.'" title="View Order Details">'.$row->receipt.'</a></td>';
@@ -66,14 +66,14 @@ echo $timeZone->getName(); */
               $output .= '<td>'.date("F j, Y g:i A", strtotime($row->order_date)).'</td>';
               $output .= '<td>';
               if($row->status == "0") {
-                $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Release</a>';
+                $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Release</a>&nbsp;&nbsp;&nbsp;';
                 // $output .= '<a href="/sales/'.$row->id.'/release" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i></a>&nbsp;&nbsp;&nbsp;';
-                // $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
               }
+              $output .= '<a href="/sales/'.$row->id.'/edit" class="edit-sales edit-sales-'.$row->id.'" title="Edit Order Data"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
               $output .= '&nbsp;&nbsp;&nbsp;<a href="/sales/'.$row->id.'/delete" class="delete delete-sales delete-sales-'.$row->id.'" title="Delete Order"><i class="fas fa-trash-alt"></i></a>';
               $output .= '</td>';
               $output .= '</tr>';
-            }
+            // }
           }
 
           echo $output;
