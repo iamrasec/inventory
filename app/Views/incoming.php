@@ -4,6 +4,61 @@
 
 $output = "";
 $role = session()->get('role');
+date_default_timezone_set('Asia/Manila');
+
+$today = date("F j, Y");
+
+$incoming_list = "";
+$received_list = "";
+
+foreach($products as $row) {
+  if($row->status == 0) {
+    $incoming_list .= '<tr>';
+    $incoming_list .= '<td>'.$row->receipt.'</td>';
+    if($row->size != "") {
+      $incoming_list .= '<td>'.$row->product_name.' -- ( '.$row->size.' )</td>';
+    }
+    else {
+      $incoming_list .= '<td>'.$row->product_name.'</td>';
+    }
+    
+    $incoming_list .= '<td>'.number_format($row->qty, 2, '.', ',').'</td>';
+    $incoming_list .= '<td>'.$row->supplier_name.'</td>';
+    $incoming_list .= '<td>'.date("F j, Y", strtotime($row->purchase_date)).'</td>';
+    $incoming_list .= '<td>'.date("F j, Y", strtotime($row->eta)).'</td>';
+    $incoming_list .= '<td>'.(($row->status == 0) ? "in-transit" : "received").'</td>';
+    if($role == 'admin') {
+      $incoming_list .= '<td>';
+      $incoming_list .= '<a href="/incoming/'.$row->id.'/received" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Received</a>&nbsp;&nbsp;&nbsp;';
+      $incoming_list .= '<a href="/incoming/'.$row->id.'/edit" class="edit-incoming edit-incoming-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
+      $incoming_list .= '<a href="/incoming/'.$row->id.'/delete" class="delete-incoming delete-incoming-'.$row->id.'"><i class="fas fa-trash-alt"></i></a>';
+      $incoming_list .= '</td>';
+    }
+    $incoming_list .= '</tr>';
+  }
+  else {
+    $received_list .= '<tr>';
+    $received_list .= '<td>'.$row->receipt.'</td>';
+    if($row->size != "") {
+      $received_list .= '<td>'.$row->product_name.' -- ( '.$row->size.' )</td>';
+    }
+    else {
+      $received_list .= '<td>'.$row->product_name.'</td>';
+    }
+    
+    $received_list .= '<td>'.number_format($row->qty, 2, '.', ',').'</td>';
+    $received_list .= '<td>'.$row->supplier_name.'</td>';
+    $received_list .= '<td>'.date("F j, Y", strtotime($row->purchase_date)).'</td>';
+    $received_list .= '<td>'.date("F j, Y", strtotime($row->eta)).'</td>';
+    $received_list .= '<td>'.(($row->status == 0) ? "in-transit" : "received").'</td>';
+    if($role == 'admin') {
+      $received_list .= '<td>';      
+      $received_list .= '</td>';
+    }
+    $received_list .= '</tr>';
+  }
+}
+
 ?>
 <main class="withpadding">
 <div class="row">
@@ -19,8 +74,26 @@ $role = session()->get('role');
 
 <div class="row">
   <div class="col-12 mt-3 pt-3 pb-3 bg-white">
+    <h4>Incoming list</h4>
     <table id="products_list" class="table table-striped table-bordered custom-list-table" style="width:100%">
       <thead>
+          <tr>
+            <th>Receipt</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>Purchase Date</th>
+            <th>ETA</th>
+            <th>Status</th>
+            <?php if($role == 'admin'): ?>
+            <th>Action</th>
+            <?php endif; ?>
+          </tr>
+      </thead>
+      <tbody>
+        <?php echo $incoming_list; ?>
+      </tbody>
+      <tfoot>
           <tr>
             <th>Receipt</th>
             <th>Product</th>
@@ -31,34 +104,34 @@ $role = session()->get('role');
             <th>Action</th>
             <?php endif; ?>
           </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<br />
+<hr />
+
+<div class="row">
+  <div class="col-12 mt-3 pt-3 pb-3 bg-white">
+    <h4>Received List</h4>
+    <table id="received_list" class="table table-striped table-bordered custom-list-table" style="width:100%">
+      <thead>
+          <tr>
+            <th>Receipt</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Supplier</th>
+            <th>Purchase Date</th>
+            <th>ETA</th>
+            <th>Status</th>
+            <?php if($role == 'admin'): ?>
+            <th>Action</th>
+            <?php endif; ?>
+          </tr>
       </thead>
       <tbody>
-          <?php 
-          foreach($products as $row) {
-            $output .= '<tr>';
-            $output .= '<td>'.$row->receipt.'</td>';
-            if($row->size != "") {
-              $output .= '<td>'.$row->product_name.' -- ( '.$row->size.' )</td>';
-            }
-            else {
-              $output .= '<td>'.$row->product_name.'</td>';
-            }
-            
-            $output .= '<td>'.number_format($row->qty, 2, '.', ',').'</td>';
-            $output .= '<td>'.$row->supplier_name.'</td>';
-            $output .= '<td>'.$row->eta.'</td>';
-            if($role == 'admin') {
-              $output .= '<td>';
-              $output .= '<a href="/incoming/'.$row->id.'/received" class="release-sales release-sales-'.$row->id.'" title="Confirm release"><i class="fas fa-check"></i> Received</a>&nbsp;&nbsp;&nbsp;';
-              // $output .= '<a href="/incoming/'.$row->id.'/edit" class="edit-product edit-product-'.$row->id.'"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;&nbsp;';
-              // $output .= '<a href="/incoming/'.$row->id.'/delete" class="delete-product delete-product-'.$row->id.'"><i class="fas fa-trash-alt"></i></a>';
-              $output .= '</td>';
-            }
-            $output .= '</tr>';
-          }
-
-          echo $output;
-          ?>
+        <?php echo $received_list; ?>
       </tbody>
       <tfoot>
           <tr>
@@ -79,6 +152,9 @@ $role = session()->get('role');
 <script type="text/javascript">
   $(document).ready(function() {
     $('#products_list').DataTable();
+  });
+  $(document).ready(function() {
+    $('#received_list').DataTable();
   });
 </script>
 

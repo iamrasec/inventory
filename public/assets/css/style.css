@@ -155,3 +155,8 @@ a {
   font-size: 12px;
   color: #ff0000;
 }
+
+#addSubproductForm label {
+  display: block;
+  text-align: left;
+}

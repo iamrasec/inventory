@@ -369,6 +369,27 @@ class Products extends BaseController {
     }    
   }
 
+  public function add_subproduct($id) {
+    $data = [];
+    helper(['form']);
+
+    $role = session()->get('role');
+    $isLoggedIn = session()->get('isLoggedIn');
+
+    $response = array();
+
+    if($isLoggedIn == 1) {
+      if($role == 'admin') {
+
+      }
+    }
+    // echo view('templates/admin_header', $data);
+    // echo view('add_subproduct');
+    // echo view('templates/footer');
+
+    return $this->response->setJSON($response);
+  }
+
   public static function slugify($text, string $divider = '-') {
     // replace non letter or digits by divider
     $text = preg_replace('~[^\pL\d]+~u', $divider, $text);

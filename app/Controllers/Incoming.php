@@ -26,7 +26,8 @@ class Incoming extends BaseController {
       $products->select('incoming.*, products.name as product_name, products.size, suppliers.name as supplier_name');
       $products->join('products', 'incoming.pid = products.id', 'inner');
       $products->join('suppliers', 'incoming.supplier_id = suppliers.id', 'inner');
-      $products->where('incoming.status', 0);
+      // $products->orderBy('incoming.eta', 'asc');
+      // $products->where('incoming.status', 0);
       $query_products = $products->get();
       $data['products'] = $query_products->getResult();
 
@@ -83,6 +84,38 @@ class Incoming extends BaseController {
         // echo view('templates/admin_header', $data);
         // echo view('edit_supplier');
         // echo view('templates/footer');
+      }
+      else {
+        return redirect()->to('/');
+      }
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
+  public function view_incoming($id = false) {
+    
+  }
+
+  public function delete_purchase_product($id = false) {
+    $data = [];
+    helper(['form']);
+
+    $role = session()->get('role');
+    $isLoggedIn = session()->get('isLoggedIn');
+
+    if($isLoggedIn == 1) {
+      if($role == 'admin') {
+        $newData = [
+          'id' => $id,
+        ];
+
+        $model = new IncomingModel();
+        $model->delete($newData);
+
+        session()->setFlashdata('success', 'Incoming Product Deleted.');
+        return redirect()->to('/incoming');
       }
       else {
         return redirect()->to('/');

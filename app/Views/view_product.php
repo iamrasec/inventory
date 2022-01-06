@@ -121,6 +121,83 @@ $output = "";
     <pre><?php // print_r($suppliers); ?></pre>
   </div>
 
+  <div class="row mt-5">
+    <div class="col-12 col-md-12 mt-1 pt-1 pb-1 bg-white">
+      <hr />
+      <div class="row">
+        <div class="col-12 col-md-10 mt-1 pt-1 pb-1 bg-white">
+          <h5><strong>Sub-products / Retail</strong></h5>
+        </div>
+        <div class="col-12 col-md-2 mt-1 pt-1 pb-1 bg-white">
+        <div class="edit_wrapper text-right">
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubproductModal">
+            Add Sub-Product
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="addSubproductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    Add Sub-Product for <?php echo $product['name']; ?><?php echo ($product['size'] != '') ? ' - '.$product['size'] : ''; ?>
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="addSubproductForm" action="/products/<?php echo $product['id']; ?>/subproduct/add" method="post">
+                    <div class="row">
+                      <div class="col-12 col-sm-12 col-md-12 mb-3 mt-3">
+                        <div class="form-group">
+                          <label for="name">Sub-Product Name</label>
+                          <input type="text" class="form-control" name="name" id="name" value="<?php echo $product['name']; ?><?php echo ($product['size'] != '') ? ' - '.$product['size'] : ''; ?> (Retail)">
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 mb-3 mt-3 form-group">
+                          <label>Conversion</label>
+                          <div class="row">
+                            <div class="col-12 col-sm-12 col-md-4">
+                              <input type="text" class="form-control" name="parentQty" id="parentQty" value="1" readonly><br>
+                              <input type="text" class="form-control" name="parentUnit" id="parentUnit" value="<?php echo $product['unit_measure']; ?>" readonly>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 text-center">To</div>
+                            <div class="col-12 col-sm-12 col-md-4">
+                              <input type="text" class="form-control" name="childQty" id="childQty" value=""><br>
+                              <select class="form-control" name="unit_measure" id="unit_measure">
+                                <option value="bottle">Bottle</option>
+                                <option value="box">Box</option>
+                                <option value="bundle">Bundle</option>
+                                <option value="can">Can</option>
+                                <option value="case">Case</option>
+                                <option value="dozen">Dozen</option>
+                                <option value="kilo">Kilo</option>
+                                <option value="liter">Liter</option>
+                                <option value="meters">Meters</option>
+                                <option value="pack">Pack</option>
+                                <option value="piece" selected="selected">Piece</option>
+                                <option value="sack">Sack</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+                  <button type="button" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script type="text/javascript">
     $(document).ready(function() {
       $('#suppliers_list').DataTable({

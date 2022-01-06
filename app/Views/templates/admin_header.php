@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bootstrap-5.0.2-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="/assets/css/select2.min.css" />
     <link rel="stylesheet" href="/assets/css/datepicker.min.css" />
@@ -16,6 +16,7 @@
 
     <script type="text/javascript" src="/assets/fontawesome/js/all.js"></script>
     <script type="text/javascript" src="/assets/js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="/assets/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="/assets/js/select2.min.js"></script>

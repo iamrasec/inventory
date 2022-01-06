@@ -53,6 +53,7 @@ $routes->get('products/(:num)', 'Products::view_product/$1', ['filter' => 'auth'
 $routes->match(['get', 'post'], 'products/add', 'Products::add_product', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'products/(:num)/edit', 'Products::edit_product/$1', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'products/(:num)/delete', 'Products::delete_product/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'products/(:num)/subproduct/add', 'Products::add_subproduct/$1', ['filter' => 'auth']);
 
 // Sales
 $routes->get('sales', 'Sales::index', ['filter' => 'auth']);
@@ -66,7 +67,8 @@ $routes->match(['get', 'post'], 'sales/(:num)/delete', 'Sales::delete_sales/$1',
 $routes->get('incoming', 'Incoming::index', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'incoming/add', 'Incoming::add_purchase', ['filter' => 'auth']);
 $routes->match(['get', 'post'], 'incoming/(:num)/received', 'Incoming::received/$1', ['filter' => 'auth']);
-$routes->match(['get', 'post'], 'incoming/(:num)/delete', 'Incoming::delete_purchase/$1', ['filter' => 'auth']);
+$routes->match(['get', 'post'], 'incoming/(:num)/delete', 'Incoming::delete_purchase_product/$1', ['filter' => 'auth']);
+$routes->get('incoming/(:num)', 'Incoming::view_incoming/$1', ['filter' => 'auth']);
 
 // Brands
 $routes->get('brands', 'Brands::index', ['filter' => 'auth']);
