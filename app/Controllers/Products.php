@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\ProductModel;
+use App\Models\SubProductModel;
 use App\Models\BrandModel;
 use App\Models\CategoryModel;
 use App\Models\SupplierModel;
@@ -49,6 +50,14 @@ class Products extends BaseController {
       if($role == 'admin') {
         $model = new ProductModel();
         $data['product'] = $model->where(['id' => $id, 'status' => 1])->first();
+
+        $sub_products = new ProductModel();
+        $query_subproducts = $sub_products->where(['is_subproduct' => 1, 'status' => 1, 'parent_id' => $id])->get();
+        $data['sub_products'] = $query_subproducts->getResult();
+
+        $sub_products_ratio = new SubProductModel();
+        $query_subproducts_ratio = $sub_products_ratio->where(['ppid' => $id])->get();
+        $data['sub_products_ratio'] = $query_subproducts_ratio->getResult();
 
         // print_r($data['product']['brand']);
 
@@ -376,18 +385,76 @@ class Products extends BaseController {
     $role = session()->get('role');
     $isLoggedIn = session()->get('isLoggedIn');
 
-    $response = array();
+    // $response = array();
+
+    echo '<pre>Submitted: '.print_r($this->request->getVar(), 1).'</pre>';
 
     if($isLoggedIn == 1) {
       if($role == 'admin') {
 
+        $model = new ProductModel();
+        $parent_product = $model->where('id', $id)->first();
+
+        // echo '<pre>Parent: '.print_r($parent_product, 1).'</pre>';
+
+        $initial_stocks = floatval($this->request->getVar('childQty')) * floatval($this->request->getVar('qty_unpack'));
+        $parent_price = $parent_product['price'] / $this->request->getVar('childQty');
+
+        $new_parent_qty = floatval($parent_product['stock_qty']) - floatval($this->request->getVar('qty_unpack'));
+
+        if($new_parent_qty < 0) {
+          session()->setFlashdata('error', 'Unable to unpack.  Source product quantity not enough.');
+          $initial_stocks = 0;
+        }
+
+        $newData = [
+          'name' => $this->request->getVar('name'),
+          'code' => $this->request->getVar('code'),
+          'size' => $parent_product['size'],
+          'description' => $parent_product['description'],
+          'brand' => $parent_product['brand'],
+          'category' => $parent_product['category'],
+          'stock_qty' => $initial_stocks,
+          'unit_measure' => $this->request->getVar('child_unit'),
+          'supplier_price' => $parent_price,
+          'price' => $this->request->getVar('price'),
+          // 'supplier' => $this->request->getVar('supplier'),
+          // 'lowstock_alert' => $this->request->getVar('lowstock_alert'),
+          'lowstock_alert' => '',
+          'is_subproduct' => 1,
+          'parent_id' => $parent_product['id'],
+        ];
+
+        // echo '<pre>Sub Product to save: '.print_r($newData, 1).'</pre>';
+
+        
+        $model->insert($newData);
+        $sub_product_id = $model->getInsertID();
+        // $sub_product_id = 100;
+
+        // echo '<pre>'.print_r($new_parent_qty, 1).'</pre>';
+
+        $subData = [
+          'ppid' => $parent_product['id'],
+          'spid' => $sub_product_id,
+          'punitqty' => $this->request->getVar('parentQty'),
+          'sunitqty' => $this->request->getVar('childQty'),
+        ];
+
+        // echo '<pre>Relation to save: '.print_r($subData, 1).'</pre>';
+
+        $subProduct = new SubProductModel();
+        $subProduct->save($subData);
+        session()->setFlashdata('success', 'Sub Product added successfully added');
+        return redirect()->to('/products/'.$id);
       }
     }
     // echo view('templates/admin_header', $data);
     // echo view('add_subproduct');
     // echo view('templates/footer');
 
-    return $this->response->setJSON($response);
+    // return $this->response->setJSON($response);
+    
   }
 
   public static function slugify($text, string $divider = '-') {
